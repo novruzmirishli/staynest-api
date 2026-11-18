@@ -28,7 +28,7 @@ public class PropertyService {
         return propertyRepository.findById(id).orElse(null);
     }
 
-    public Property creaProperty(PropertyRequest request){
+    public Property createProperty(PropertyRequest request){
 
     Property property = new Property(
         String.valueOf(nextId.getAndIncrement()),
@@ -40,5 +40,20 @@ public class PropertyService {
     );
 
     return propertyRepository.save(property);
+    }
+
+    public Property updateProperty(String id, PropertyRequest request){
+        Property property = propertyRepository.findById(id).orElse(null);
+    
+        if (property == null) {
+            return null;
+        }
+
+        property.setTitle(request.getTitle());
+        property.setDescription(request.getDescription());
+        property.setPricePerNight(request.getPricePerNight());
+        property.setLocation(request.getLocation());
+
+    return property;
     }
 }
