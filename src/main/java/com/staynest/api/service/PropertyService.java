@@ -56,4 +56,15 @@ public class PropertyService {
 
     return property;
     }
+
+    public boolean deleteProperty(String id) {
+        Property property = propertyRepository.findById(id).orElse(null);
+
+        if (property == null) {
+            return false;
+        }
+
+        propertyRepository.delete(property);
+        return true;
+    }
 }
