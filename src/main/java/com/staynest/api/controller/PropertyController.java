@@ -6,6 +6,8 @@ import com.staynest.api.service.PropertyService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import org.springframework.web.bind.annotation.GetMapping;
+
 
 @RestController
 @RequestMapping("/api/v1/properties")
@@ -21,4 +23,10 @@ public class PropertyController {
     public List<Property> getAllProperties() {
         return propertyService.getAllProperties();
     }
+
+    @GetMapping("/{id}")
+    public Property getPropertyById(@PathVariable String id){
+        return propertyService.getPropertyById(id);
+    }
+    
 }
