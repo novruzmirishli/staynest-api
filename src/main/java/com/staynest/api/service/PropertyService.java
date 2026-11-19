@@ -4,6 +4,8 @@ package com.staynest.api.service;
 import com.staynest.api.dto.PropertyRequest;
 import com.staynest.api.model.Property;
 import com.staynest.api.repository.PropertyRepository;
+import com.staynest.api.security.MockUser;
+
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,8 +22,15 @@ public class PropertyService {
         this.propertyRepository = propertyRepository;
     }
 
-    public List<Property> getAllProperties() {
-        return propertyRepository.findAll();
+    public List<Property> getAllProperties(MockUser user) {
+
+        if (user.getRole().equals("ADMIN")) {
+            return propertyRepository.findAll();
+        }
+
+        return propertyRepository.findAll().stream()
+            .filter(property -> property.getOwnerId().equals(user.getUserId()))
+            .toList();
     }
 
     public Property getPropertyById(String id) {
