@@ -67,9 +67,21 @@ public class PropertyController {
     }
 
     @PostMapping
-    public Property createProperty(@RequestBody PropertyRequest request){
-        return propertyService.createProperty(request);
+    public ResponseEntity<?> createProperty(
+        @RequestBody PropertyRequest request,
+        @RequestHeader(value = "Authorization", required = false) String token) {
+
+    MockUser user = authenticationService.authenticate(token);
+
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                        .body("Missing or invalid authentication token");
     }
+
+    Property property = propertyService.createProperty(request, user);
+
+    return ResponseEntity.status(HttpStatus.CREATED).body(property);
+}
 
     @PutMapping("/{id}")
     public Property updateProperty(@PathVariable String id, @RequestBody PropertyRequest request){

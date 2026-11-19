@@ -37,7 +37,7 @@ public class PropertyService {
         return propertyRepository.findById(id).orElse(null);
     }
 
-    public Property createProperty(PropertyRequest request){
+    public Property createProperty(PropertyRequest request, MockUser user){
 
     Property property = new Property(
         String.valueOf(nextId.getAndIncrement()),
@@ -45,7 +45,7 @@ public class PropertyService {
         request.getDescription(),
         request.getPricePerNight(),
         request.getLocation(),
-        "user-a"
+        user.getUserId()
     );
 
     return propertyRepository.save(property);
