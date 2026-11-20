@@ -1,19 +1,28 @@
-# Contributors
 
-This document lists the team members and their responsibilities for the StayNest API Prototype.
+# StayNest Contributors
 
 ## Team Members
 
-### 1. Novruz Mirishli
-- **Student ID:** 000019638
-- **Responsibilities:**
-  - Backend API development.
-  - Property resource CRUD operations.
-  - REST API design and endpoint implementation.
+### Novruz Mirishli
+Student ID: 000019638
 
-### 2. Shamsi Nagiev
-- **Student ID:** 000018974
-- **Responsibilities:**
-  - Mock token-based authentication.
-  - Role-based authorization and access control.
-  - API documentation.
+Responsibilities:
+- Property CRUD endpoints
+- Property model and repository
+- Property service
+- Mock authentication
+- Owner-based access control
+
+### Shamsi Nagiev
+Student ID: 000018974
+
+Responsibilities:
+- Input validation
+- Structured error responses
+- Consistent JSON response format
+- HTML greeting endpoint
+- API documentation
+- README documentation
+- CONTRIBUTORS documentation
+- Postman API collection
+- Demo preparation
