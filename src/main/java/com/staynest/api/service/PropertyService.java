@@ -16,7 +16,7 @@ public class PropertyService {
 
     private final PropertyRepository propertyRepository;
 
-    private final AtomicInteger nextId = new AtomicInteger(3);
+    private final AtomicInteger nextId = new AtomicInteger(5);
 
     public PropertyService(PropertyRepository propertyRepository) {
         this.propertyRepository = propertyRepository;

@@ -32,6 +32,25 @@ public class PropertyRepository {
                 "Gabala, Azerbaijan",
                 "user-b"
         ));
+        properties.add(new Property(
+        "3",
+        "City Apartment Baku",
+        "A modern apartment in the city center.",
+        new BigDecimal("90.00"),
+        "Baku, Azerbaijan",
+        "user-a"
+
+        ));
+
+        properties.add(new Property(
+        "4",
+        "Forest House Gabala",
+        "A comfortable house surrounded by green forests.",
+        new BigDecimal("110.00"),
+        "Gabala, Azerbaijan",
+        "user-b"
+        
+        ));
     }
 
     public List<Property> findAll() {
