@@ -84,9 +84,36 @@ public class PropertyController {
 }
 
     @PutMapping("/{id}")
-    public Property updateProperty(@PathVariable String id, @RequestBody PropertyRequest request){
-        return propertyService.updateProperty(id, request);
+public ResponseEntity<?> updateProperty(
+        @PathVariable String id,
+        @RequestBody PropertyRequest request,
+        @RequestHeader(value = "Authorization", required = false) String token) {
+
+    MockUser user = authenticationService.authenticate(token);
+
+    if (user == null) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body("Missing or invalid authentication token");
     }
+
+    Property property = propertyService.getPropertyById(id);
+
+    if (property == null) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body("Property not found");
+    }
+
+    if (!user.getRole().equals("ADMIN")
+            && !property.getOwnerId().equals(user.getUserId())) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                .body("You are not allowed to update this property");
+    }
+
+    Property updatedProperty = propertyService.updateProperty(id, request);
+
+    return ResponseEntity.ok(updatedProperty);
+}
+
     @DeleteMapping("/{id}")
     public boolean deleteProperty(@PathVariable String id){
         return propertyService.deleteProperty(id);
