@@ -114,8 +114,33 @@ public ResponseEntity<?> updateProperty(
     return ResponseEntity.ok(updatedProperty);
 }
 
-    @DeleteMapping("/{id}")
-    public boolean deleteProperty(@PathVariable String id){
-        return propertyService.deleteProperty(id);
+   @DeleteMapping("/{id}")
+public ResponseEntity<?> deleteProperty(
+        @PathVariable String id,
+        @RequestHeader(value = "Authorization", required = false) String token) {
+
+    MockUser user = authenticationService.authenticate(token);
+
+    if (user == null) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body("Missing or invalid authentication token");
     }
+
+    Property property = propertyService.getPropertyById(id);
+
+    if (property == null) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body("Property not found");
+    }
+
+    if (!user.getRole().equals("ADMIN")
+            && !property.getOwnerId().equals(user.getUserId())) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                .body("You are not allowed to delete this property");
+    }
+
+    propertyService.deleteProperty(id);
+
+    return ResponseEntity.noContent().build();
+}
 }
