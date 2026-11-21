@@ -1,10 +1,15 @@
 package com.staynest.api.controller;
 
 import com.staynest.api.dto.PropertyRequest;
+import jakarta.validation.Valid;
 import com.staynest.api.model.Property;
 import com.staynest.api.security.MockAuthenticationService;
 import com.staynest.api.security.MockUser;
 import com.staynest.api.service.PropertyService;
+
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -37,9 +42,28 @@ public class PropertyController {
 
     if (user == null) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-            .body("Missing or invalid authentication token");
+            .body(Map.of(
+    "success", false,
+    "error", Map.of(
+        "code", "UNAUTHORIZED",
+        "message", "Missing or invalid authentication token"
+    )
+));
     }
-        return ResponseEntity.ok(propertyService.getAllProperties(user));
+        
+List<Property> properties = propertyService.getAllProperties(user);
+
+return ResponseEntity.ok(Map.of(
+    "success", true,
+    "message", "Properties retrieved successfully",
+    "data", properties,
+    "meta", Map.of(
+        "total", properties.size(),
+        "page", 1,
+        "perPage", properties.size()
+    )
+));
+
     }
 
     @GetMapping("/{id}")
@@ -49,69 +73,123 @@ public class PropertyController {
 
         if (user == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                        .body("Missing or invalid authentication token");
+                        .body(Map.of(
+    "success", false,
+    "error", Map.of(
+        "code", "UNAUTHORIZED",
+        "message", "Missing or invalid authentication token"
+    )
+));
     }
         Property property = propertyService.getPropertyById(id);
 
         if (property == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body("Property not found");
+                        .body(Map.of(
+    "success", false,
+    "error", Map.of(
+        "code", "NOT_FOUND",
+        "message", "Property not found"
+    )
+));
     }
 
     if (!user.getRole().equals("ADMIN")
             && !property.getOwnerId().equals(user.getUserId())) {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                        .body("You are not allowed to access this property");
+                        .body(Map.of(
+    "success", false,
+    "error", Map.of(
+        "code", "FORBIDDEN",
+        "message", "You are not allowed to access this property"
+    )
+));
             }
-        return ResponseEntity.ok(property);
+        return ResponseEntity.ok(Map.of(
+    "success", true,
+    "message", "Property retrieved successfully",
+    "data", property
+));
     }
 
     @PostMapping
     public ResponseEntity<?> createProperty(
-        @RequestBody PropertyRequest request,
+        @Valid @RequestBody PropertyRequest request,
         @RequestHeader(value = "Authorization", required = false) String token) {
 
     MockUser user = authenticationService.authenticate(token);
 
         if (user == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                        .body("Missing or invalid authentication token");
+                        .body(Map.of(
+    "success", false,
+    "error", Map.of(
+        "code", "UNAUTHORIZED",
+        "message", "Missing or invalid authentication token"
+    )
+));
     }
 
     Property property = propertyService.createProperty(request, user);
 
-    return ResponseEntity.status(HttpStatus.CREATED).body(property);
+    return ResponseEntity.status(HttpStatus.CREATED).body(Map.of(
+    "success", true,
+    "message", "Property created successfully",
+    "data", property
+));
 }
 
     @PutMapping("/{id}")
 public ResponseEntity<?> updateProperty(
         @PathVariable String id,
-        @RequestBody PropertyRequest request,
+        @Valid @RequestBody PropertyRequest request,
         @RequestHeader(value = "Authorization", required = false) String token) {
 
     MockUser user = authenticationService.authenticate(token);
 
     if (user == null) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                .body("Missing or invalid authentication token");
+                .body(Map.of(
+    "success", false,
+    "error", Map.of(
+        "code", "UNAUTHORIZED",
+        "message", "Missing or invalid authentication token"
+    )
+));
     }
 
     Property property = propertyService.getPropertyById(id);
 
     if (property == null) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body("Property not found");
+                .body(Map.of(
+    "success", false,
+    "error", Map.of(
+        "code", "NOT_FOUND",
+        "message", "Property not found"
+    )
+));
     }
 
     if (!user.getRole().equals("ADMIN")
             && !property.getOwnerId().equals(user.getUserId())) {
         return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                .body("You are not allowed to update this property");
+                .body(Map.of(
+    "success", false,
+    "error", Map.of(
+        "code", "FORBIDDEN",
+        "message", "You are not allowed to update this property"
+    )
+));
     }
 
     Property updatedProperty = propertyService.updateProperty(id, request);
 
-    return ResponseEntity.ok(updatedProperty);
+    return ResponseEntity.ok(Map.of(
+    "success", true,
+    "message", "Property updated successfully",
+    "data", updatedProperty
+));
 }
 
    @DeleteMapping("/{id}")
@@ -123,24 +201,47 @@ public ResponseEntity<?> deleteProperty(
 
     if (user == null) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                .body("Missing or invalid authentication token");
+                .body(Map.of(
+    "success", false,
+    "error", Map.of(
+        "code", "UNAUTHORIZED",
+        "message", "Missing or invalid authentication token"
+    )
+));
     }
 
     Property property = propertyService.getPropertyById(id);
 
     if (property == null) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body("Property not found");
+                .body(Map.of(
+    "success", false,
+    "error", Map.of(
+        "code", "NOT_FOUND",
+        "message", "Property not found"
+    )
+));
     }
 
     if (!user.getRole().equals("ADMIN")
             && !property.getOwnerId().equals(user.getUserId())) {
         return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                .body("You are not allowed to delete this property");
+                .body(Map.of(
+    "success", false,
+    "error", Map.of(
+        "code", "FORBIDDEN",
+        "message", "You are not allowed to delete this property"
+    )
+));
     }
 
     propertyService.deleteProperty(id);
 
-    return ResponseEntity.noContent().build();
+    Map<String, Object> response = new java.util.LinkedHashMap<>();
+response.put("success", true);
+response.put("message", "Property deleted successfully");
+response.put("data", null);
+
+return ResponseEntity.ok(response);
 }
 }
