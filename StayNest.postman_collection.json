@@ -1,0 +1,191 @@
+{
+  "info": {
+    "_postman_id": "068dde3d-12f7-4452-975c-75900f1a66ab",
+    "name": "StayNest API - Assignment 2",
+    "description": "### Welcome to Postman! This is your first collection. \n\nCollections are your starting point for building and testing APIs. You can use this one to:\n\n\u2022 Group related requests\n\u2022 Test your API in real-world scenarios\n\u2022 Document and share your requests\n\nUpdate the name and overview whenever you\u2019re ready to make it yours.\n\n[Learn more about Postman Collections.](https://learning.postman.com/docs/collections/collections-overview/)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "60342219",
+    "_collection_link": "https://go.postman.co/collection/60342219-068dde3d-12f7-4452-975c-75900f1a66ab?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "List Properties",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "{{bearer_token_0n6m}}"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8080/api/v1/properties",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "v1",
+            "properties"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Property by ID",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "{{bearer_token_0n6m}}"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8080/api/v1/properties/1",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "v1",
+            "properties",
+            "1"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create Property",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "{{bearer_token_0n6m}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "\r\n{\r\n  \"title\": \"Modern Apartment Baku\",\r\n  \"description\": \"A beautiful modern apartment in the center of Baku.\",\r\n  \"pricePerNight\": 120,\r\n  \"location\": \"Baku, Azerbaijan\"\r\n}\r\n",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/v1/properties",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "v1",
+            "properties"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Update Property",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "{{bearer_token_0n6m}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "\r\n{\r\n  \"title\": \"Luxury Apartment Baku\",\r\n  \"description\": \"A renovated luxury apartment in the center of Baku.\",\r\n  \"pricePerNight\": 180,\r\n  \"location\": \"Baku, Azerbaijan\"\r\n}\r\n",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/v1/properties/5",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "v1",
+            "properties",
+            "5"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Delete Property",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "{{bearer_token_0n6m}}"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8080/api/v1/properties/5",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "v1",
+            "properties",
+            "5"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Greeting Page",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/api/v1/greeting",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "v1",
+            "greeting"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "bearer_token_0n6m",
+      "secret": true,
+      "value": "Bearer user-a-token"
+    }
+  ]
+}
